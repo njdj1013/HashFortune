@@ -85,6 +85,10 @@
 	  display:none; 
 	}
 
+    #user_search_results {
+        display:none;
+    }
+
 	#investments_all {
 	  display:none; 
 	}
@@ -154,6 +158,17 @@
   
 </h1>
 
+<!--division containing the challenge toolbar, which shows which challenge you're playing in  -->
+<div id="challenge_toolbar" style="width:200px;float:left;">
+<p> Main money </p>
+<p> Challenge 1 </p>
+<p> Challenge 2 </p>
+
+</div>
+
+<!-- division containing the main body of the page, everything not in a toolbar -->
+<div id="main_body" style="float:left;">
+    
 <!-- division containing the player's profile picture -->
 <div id="player_pic">
 	<img style="margin:0px auto;display:block"
@@ -266,7 +281,8 @@
 		Search by username:
 		<input type="text" id="usearch"; size="35">
 		<input type="button" value="Search" width="50" 	
-		onclick="rename_page(document.getElementById('usearch').value); clear_searches()">
+            onclick="search_by_email(user_name, document.getElementById('usearch').value);
+            clear_searches();">
 		</h2>
 	</form>
 </div>
@@ -278,9 +294,14 @@
 		Search by email:
 		<input type="email" id="esearch"; size="35">
 		<input type="button" value="Search" width="50" 
-		onclick="rename_page(document.getElementById('esearch').value); clear_searches()">
+            onclick="search_by_email(user_name, document.getElementById('esearch').value);
+            clear_searches();">
 		</h2>
 	</form>
+</div>
+
+<!-- division containing the results from searching for a user by username or email -->
+<div id="user_search_results">
 </div>
 
 <!-- division containing a list of all investments of a user -->
@@ -376,6 +397,7 @@
 <BR>
 </div>
 
+</div> <!--closes div separating main body from toolbar -->
 
 </body>
 
@@ -394,6 +416,7 @@
 			socket.on( 'my_investments_table' , myInvestmentsProcedure );
 			socket.on( 'leader_board' , leaderProcedure );
 			socket.on( 'player_info_table' , playerInfoProcedure );
+            socket.on( 'user_search' , userProcedure );
 		});
 	 
 	</script>

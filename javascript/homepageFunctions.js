@@ -34,6 +34,7 @@
 			document.getElementById("hashtag_graph").style.display = "none";
 			document.getElementById("hashtag_stats").style.display = "none";
 			document.getElementById("new_challenge").style.display = "none";
+            documetn.getElementById("user_search_results").style.display = "none";
 		}
 		
 		//<!-- show divisions relevant to homepage -->

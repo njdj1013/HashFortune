@@ -430,3 +430,24 @@ function serveLeaderBoard(message){
 			socketHandler.messageUser( username , 'leader_board' , rows);
 		});
 }
+
+// search for users with a specified username
+function serveSearchUser(message)
+{
+ 	var username = message.user_name;
+ 	var searchUsername = message.search_user;
+ 	//search for the user name and return a table (?) with the resulting usernames
+ 	
+ 	socketHandler.messageUser( username , 'user_search' , ___ );
+}
+
+
+//search for users with a specified email
+function serveSearchEmail(message)
+{
+ 	var username = message.user_name;
+ 	var email = message.search_email;
+ 	//search for users with that email and return a table (?) with the resulting usernames
+ 	
+ 	socketHandler.messageUser( username , 'user_search' , ___ );
+}

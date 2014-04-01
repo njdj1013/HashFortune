@@ -57,6 +57,8 @@ function listen( client )
 	client.on('my_investments_request' , serverCommands.serveMyTrending );
 	client.on('player_info_request' , serverCommands.servePlayerInfo);
 	client.on('leader_request' , serverCommands.serveLeaderBoard );
+    client.on('search_username' , serverCommands.serveSearchUser );
+	client.on('search_user_email' , serverCommands.serveSearchEmail );
 }
 
 

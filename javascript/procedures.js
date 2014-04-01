@@ -122,6 +122,23 @@ function playerInfoProcedure(message)
 	document.getElementById("player_info").innerHTML=finaltable;
 }
 
+function userProcedure(message)
+{
+	var table1 = "<table style="border:0px solid black;">";
+	var table2 = "";
+    var table3 = "</table> <BR> <BR>";
+    
+    for (var x = 0; x < message.length; x++ )
+    {
+    	table2 = table2 + "<tr><td>" + message[x] + "</td></tr>";
+    	//maybe also add a button to go to their profile
+    }
+    
+    var finaltable = table1 + table2 + table3;
+    document.getElementById("user_search_results").innerHTML = finaltable;
+}
+
+
 // present the user with a warning
 function warningProcedure(message)
 {

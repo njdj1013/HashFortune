@@ -32,3 +32,21 @@ function sell_hash( user_name , tag_name , challengeID, amount )
 	message.amount = amount;
 	socket.emit( 'sell_hash' , message); 
 }
+
+//search by username
+function search_by_username( user_name , search_user )
+{
+ 	var message = {};
+ 	message.user_name = user_name;
+ 	message.search_user = search_user;
+ 	socket.emit( 'search_username' , message);
+}
+
+//search by email
+function search_by_email( user_name , search_email )
+{
+ 	var message = {};
+ 	message.user_name = user_name;
+ 	message.search_email = search_email;
+ 	socket.emit( 'search_user_email' , message);
+}
