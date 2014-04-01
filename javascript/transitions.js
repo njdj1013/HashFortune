@@ -1,0 +1,34 @@
+
+// switch to the tag page
+function switch_to_tag( user_name , tag_name , challengeID )
+{
+	var message = {};
+	message.user_name = user_name;
+	message.tag_name = tag_name;
+	message.challengeID = challengeID;
+	socket.emit( 'tag_page_request' , message); 
+}
+
+
+// buy a hashtag
+function buy_hash( user_name , tag_name , challengeID, amount )
+{
+	var message = {};
+	message.user_name = user_name;
+	message.tag_name = tag_name;
+	message.challengeID = challengeID;
+	message.amount = amount;
+	socket.emit( 'buy_hash' , message); 
+}
+
+
+// sell a hashtag
+function sell_hash( user_name , tag_name , challengeID, amount )
+{
+	var message = {};
+	message.user_name = user_name;
+	message.tag_name = tag_name;
+	message.challengeID = challengeID;
+	message.amount = amount;
+	socket.emit( 'sell_hash' , message); 
+}

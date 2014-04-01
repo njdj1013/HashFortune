@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html>
+
+
+	<script> var socket;
+		var user_name;
+		var current_tag;
+	</script>
+	
+	<script src= "http://code.jquery.com/jquery-2.1.0.min.js"> </script>
+	<script src = "/javascript/cookie.js"></script>
+	<script src = "/javascript/transitions.js"> </script>
+	<script src= "http://code.jquery.com/jquery-2.1.0.min.js"> </script>
+	<script src= "/javascript/procedures.js"></script>
+	<script src= "/socket.io/socket.io.js"></script>
+
+
+<head>
+
+	<link rel="stylesheet" type="text/css" href="css/basics.css">
+	<title>HashFortune</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<!-- disable the enter key -->
+	<script type="text/javascript"> 
+		function stopRKey(evt) { 
+			var evt = (evt) ? evt : ((event) ? event : null); 
+			var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+			
+			if ((evt.keyCode == 13) && (node.type=="text")) {
+				return false;
+			} 
+		} 
+		document.onkeypress = stopRKey; 
+	</script>
+		
+</head>
+
+
+<!-- definitions for the various types of divs used -->
+<style> 
+
+	#trending {
+	  display:block; 
+	}
+
+	#investments_summary {
+	  display:block; 
+	}
+
+	#stockleaders {
+	  display:block; 
+	}
+
+	#friends {
+	  display:block; 
+	}
+
+	#challenge_home {
+	  display:none;
+	}
+
+	#new_challenge {
+	  display:none;
+	}
+
+	#player_info {
+	  display:none; 
+	}
+
+	#player_pic {
+	  display:none;
+	}
+
+	#hashtag_search {
+	  display:none; 
+	}
+
+	#username_search {
+	  display:none; 
+	}
+
+	#email_search {
+	  display:none; 
+	}
+
+	#investments_all {
+	  display:none; 
+	}
+
+	#settings {
+	  display:none;
+	}
+
+	#hashtag_investments {
+	  display:none;
+	}
+
+	#buy_sell_tags {
+	  display:none;
+	}
+
+	#hashtag_graph {
+	  display:none;
+	}
+
+	#hashtag_stats {
+	  display:none;
+	}
+
+	table.center {
+	  margin-left:auto;
+	  margin-right:auto;
+	}
+	
+</style>
+
+
+<body>
+
+
+<h1>
+    <script src = "/javascript/homepageFunctions.js"></script>
+  
+	<!-- icon on the lefthand side of the toolbar -->
+	<div style="float:left">
+		<img src="icons/icon.png" height = "62" width = "62" class="pointable"
+		onclick="rename_page('Home Page'); hide_all(); show_homepage();">
+	</div>
+	  
+	<!-- title of the page being viewed -->
+	<div id="page_title" style="display:inline;">
+		Home Page
+	</div>
+
+	<!-- icons on the righthand side of the toolbar -->
+	<div style="float:right;">
+		<img src="icons/trading.jpeg" height = "50" width = "50" class="pointable"
+		onclick="rename_page('Investments'); hide_all(); show_investments()" >
+				
+		<img src="icons/portfolio.png" height = "50" width = "50" class="pointable"
+		onclick="rename_page('Portfolio'); hide_all(); show_portfolio()" >
+			 
+		<img src="icons/friends.png" height = "50" width = "50" class="pointable"	
+		onclick="rename_page('Friends'); hide_all(); show_friends_page()" >
+			
+		<img src="icons/challenge.png" height = "50" width = "50" class="pointable"
+		onclick="rename_page('Challenges'); hide_all(); 	show_challenge_home()" >
+			
+		<img src="icons/settings.png" height = "50" width = "50" class="pointable"
+		onclick="rename_page('Settings'); hide_all(); show_settings()" >
+	</div>
+  
+</h1>
+
+<!-- division containing the player's profile picture -->
+<div id="player_pic">
+	<img style="margin:0px auto;display:block"
+	src="icons/defaultprofilepic.png" height = "250" width = "250">
+	<BR>
+	<BR>
+</div>
+
+<!-- division containing the player's info -->
+<div id="player_info">
+  
+  <!--<div class='info'> -->
+</div>
+
+<!-- division containing a summary of a subset of the player's investments -->
+<div id="investments_summary">
+	
+</div>
+
+<!-- division containing the trending hashtags -->
+<div id="trending">
+
+</div>
+
+<!-- division containing the game leaderboard -->
+<div id="leaderboard">
+
+ <!-- <div class='scroll'>
+ </div>-->
+
+
+</div>
+
+<!-- division containing the player's friends -->
+<div id="friends">
+  <div class='scroll'>
+    <table width=75%; class="center";>
+    <caption>Your Friends</caption>
+    <tr>
+      <td width=50%>Monkey</td>
+      <td>94837</td>
+    </tr>
+    <tr>
+      <td>Aaron Elliott</td>
+      <td>87453</td>
+    </tr>
+    <tr>
+      <td>You</td>
+      <td>56672</td>
+    </tr>
+    <tr>
+      <td>Amelia Badelia</td>
+      <td>43272</td>
+    </tr>
+    </table>
+  </div>
+<BR>
+<BR>
+</div>
+
+<!-- division containing the challenge home page -->
+<div id="challenge_home">
+   <table width=75%; class="center"; id="centered">
+    	<caption id="caption">Current Challenges</caption>
+    	   <tr>
+    	   	<th style="font-size:18px;">Players</th>
+    	   	<th style="font-size:18px;">Type</th>
+    	   	<th style="font-size:18px;">Initial Investment</th>
+    	   	<th style="font-size:18px;">Time</th>
+    	   </tr>
+    	   <tr>
+      		<td>4</td> 
+      		<td>Quick</td> 
+      		<td>500</td>
+      		<td>[Accept][Decline]</td>
+    	   </tr>
+    	   <tr>
+      		<td>6</td>
+      		<td>Friends</td>
+      		<td>700</td>
+      		<td>2:00 Remaining</td>
+    	   </tr>
+    	   <tr>
+    	   	<td>4</td>
+    	   	<td>Friends</td> 
+    	   	<td>900</td>
+    	   	<td>Pending</td>
+    	   </tr>
+    </table>
+<BR>
+<BR>
+</div>
+
+<!-- division containing a new challenges page -->
+<div id="new_challenge">
+   <form name="Quick" >
+   	<input type="submit" value="New Quick Challenge" />
+   </form>
+   <form name="Friends" >
+   	<input type="submit" value="New Friend Challenge" />
+   </form>
+<BR>
+<BR>
+</div>
+
+<!-- division containing the searchbar for a username -->
+<div id="username_search">
+	<form>
+		<h2>
+		Search by username:
+		<input type="text" id="usearch"; size="35">
+		<input type="button" value="Search" width="50" 	
+		onclick="rename_page(document.getElementById('usearch').value); clear_searches()">
+		</h2>
+	</form>
+</div>
+
+<!-- division containing the searchbar for an email -->
+<div id="email_search">
+	<form>
+		<h2>
+		Search by email:
+		<input type="email" id="esearch"; size="35">
+		<input type="button" value="Search" width="50" 
+		onclick="rename_page(document.getElementById('esearch').value); clear_searches()">
+		</h2>
+	</form>
+</div>
+
+<!-- division containing a list of all investments of a user -->
+<div id="investments_all">
+</div>
+
+<!-- division containing the settings menu -->
+<div id="settings">
+	<p> Email Notifications </p>
+	<p> Change Profile Picture </p>
+	<p> Rerun Tutorial </p>
+	<input type="button" value="Logout" onclick=" setCookie( 'user_name' , '' , 1); setCookie('pass_word' , '' , 1 ); location.href = '/index.html'; "/>
+
+</div>
+
+<!-- division containing the player's investment info for a particular hashtag -->
+<div id="hashtag_investments">
+   <table width=75%; class="center";>
+    	<caption id="hashtag_name">Hashtag Name</caption>
+    	   <tr>
+      		<td width=50%>Current Investment</td>
+      		<td id="my_invested_points">300</td>
+    	   </tr>
+    	   <tr>
+      		<td width=50%>Uninvested Pts</td>
+      		<td id="my_uninvested_points">576</td>
+    	   </tr>
+    </table>
+    <BR>
+    <BR>
+</div>
+
+<!-- division containing the information regarding a particular hashtag -->
+<div id="hashtag_stats">
+   <table width=75%; class="center";>
+    	<caption>Popularity</caption>
+    	   <tr>
+      		<td width=50%>Current Investors</td>
+      		<td id="total_investors">3210</td>
+    	   </tr>
+    	   <tr>
+      		<td width=50%>Pts Invested</td>
+      		<td id="total_invested_points">4000</td>
+    	   </tr>
+    </table>
+    <BR>
+    <BR>
+</div>
+
+<!-- division containing the graph of the history of a particular hashtag -->
+<div id="hashtag_graph">
+   
+</div>
+
+<!-- division containing the menu through which a user can buy or sell a particular hashtag -->
+<div id="buy_sell_tags">
+   <form name="buy" >
+     Amount: <input type="text" id="amount_buy" /> <br>
+     <input type="button" value="Buy!" onclick="
+	var username = user_name;
+	var tag_name = current_tag;
+	var challengeID = 0;
+	var amount = $('#amount_buy').val();
+	buy_hash(username, tag_name, challengeID, amount);
+	clear_searches();"/>
+   </form>
+   <form name="sell" >
+     Amount: <input type="text" id="amount_sell" /> <br>
+     <input type="button" value="Sell!" onclick="
+       var username = user_name;
+	var tag_name = current_tag;
+	var challengeID = 0;
+	var amount = $('#amount_sell').val();
+	sell_hash(username, tag_name, challengeID, amount);
+	clear_searches();"/>
+   </form>
+</div>
+
+<!-- division containing the searchbar for a hashtag -->
+<div id="hashtag_search">
+	<form>
+		<h1>
+		#Hashtag Search:
+		<input type="text" id="hsearch"; size="35">
+		<input type="button" value="Search" width="50" onclick="rename_page('Hashtag Investment');
+		 current_tag = document.getElementById('hsearch').value;
+		 document.getElementById('hashtag_name').innerHTML='#' + current_tag;
+		 switch_to_tag(user_name, document.getElementById('hsearch').value, 0); 
+ 		 clear_searches(); hide_all(); show_hashtag_page();">
+		</h1>
+	</form>
+<BR>
+<BR>
+</div>
+
+
+</body>
+
+
+	<script>
+
+		var firstTime = true;
+		$(document).ready(function() {
+		
+			user_name = getCookie( "user_name" );
+			socket = io.connect('http://' + document.location.host);
+			socket.on( 'welcome' , connectProcedure );
+			socket.on( 'tag_page', tagProcedure );
+			socket.on( 'trending_table', trendingProcedure );
+			socket.on( 'warning', warningProcedure );
+			socket.on( 'my_investments_table' , myInvestmentsProcedure );
+			socket.on( 'leader_board' , leaderProcedure );
+			socket.on( 'player_info_table' , playerInfoProcedure );
+		});
+	 
+	</script>
+
+
+</html>

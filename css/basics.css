@@ -1,0 +1,67 @@
+body
+{
+   background-color:#C9FBC9;
+   
+}
+/* when you move your mouse over anything with class="pointable", your cursor will turn into a pointer */
+.pointable 
+{
+   cursor:pointer;
+}
+img.pointable:hover
+{
+   opacity:0.4;
+}
+h1 {color:black;
+    font-size: 40pt; 
+    padding:5px;
+    background-color:#336600;
+}
+table {border-collapse:separate;
+
+       border-radius: 5px;
+       border:5px; #304816;
+       background-color:#FCFCFC;
+       border-style:groove;
+    border-color:#336600;     
+} 
+caption {
+    font-family:Times; 
+    color:black; 
+    font-size:30pt;
+    font-weight:bold;
+    text-shadow:.5px .5px #336600;
+}     
+th {font-family:Times; 
+    color:#1A3300; 
+    font-size:30pt;
+    
+    border-bottom:1px solid #000000;
+    border-right:1px solid #000000;
+    border-left:1px solid #000000;
+    border-top:1px solid #000000;   
+    padding:1px 1px 0;
+    /*background-color:#F7F7F7;*/
+}
+    
+td{font-family:Times; 
+   color:#1A3300; 
+   font-size:14pt;
+   
+   border:1px solid #000000;
+   /*border-top:1px solid #000000;
+   border-right:1px solid #000000;
+   border-left:1px solid #000000;
+   padding:1px 1px 0;
+   /*background-color:#F7F7F7;*/
+   width=50%;
+}
+  
+tr {
+   /*background-color:#C0C0C0;*/
+   border-style:groove;
+    border-color:#336600;
+}
+#page_title {
+	font-size:100%;
+}

@@ -1,0 +1,106 @@
+
+<link rel="stylesheet" type="text/css" href="css/basics.css">
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-2.1.0.min.js"> </script>
+
+<div id="warning">
+  JavaScript is required to run this app.
+</div>
+
+<h1> Welcome to HashFortune! </h1>
+
+<img src="icons/icon.png" height = "300" width = "300" class="centered">
+<BR><BR>
+</h1> 
+
+<div id="login_section">
+  <input id="name" type="text"></input> <br>
+  <input id="pass" type="password"></input> <br>
+  <input id="login" type="button" value="Log In" disabled="false"></input>
+</div>
+
+<BR>
+<BR>
+
+Not a member? <br>
+<input type="button" id="create button" 
+				onclick="var id = document.getElementById('new account');
+			      	id.style.display = 'block';
+			      	this.style.display = 'none';"
+			      	value="Create Account">
+
+
+<div style="display:none" id="new account">
+<form name="create account">
+    <fieldset>
+    Email: <br> <input id ="email" type="text"/> <br>
+    Username: <br> <input id = "cuser" type="text" name="username" /> <br>
+    Create Password: <br> <input id ="cpass" type="password" name="password" /> <br>
+    Confirm Password: <br> <input id = "crepass" type="password" name="repassword" /> <br>
+       
+    <input id = "createB" type="button" value="Create Account" /></input>
+    </fieldset>
+</form>
+</div>
+
+<script src = "/javascript/procedures.js" ></script>
+<script src = "/javascript/cookie.js"></script>
+<script>
+	
+$(document).ready(function() {
+	
+
+   $('#warning').css('display', 'none');
+   $('#login').attr('disabled', false);
+   socket = io.connect('http://' + document.location.host);
+   
+   socket.on( 'welcome' , connectProcedure );
+   socket.on( 'login_ok', loginProcedure );
+   socket.on( 'login_fail' , function(message) { alert(message) } );
+   socket.on( 'warning' , warningProcedure );
+   
+   /*
+	Handle all possible message from server while on server page
+   */
+   
+   //Below handle all possible user caused events.
+    $('#login').click(function() {
+      var name = $('#name').val();
+	  var pass = $('#pass').val();
+      if (name && pass) {
+        name = name.trim();
+		pass = pass.trim();
+        if (name.length > 0 ) {
+          socket.emit('login', { user_name: name , pass_word: pass });
+        }
+      }
+      // Clear the input field.
+      $('#name').val('');
+	  $('#pass').val('');
+    });
+
+	$('#createB').click( function() {
+		var name = $('#cuser').val();
+		var pass = $('#cpass').val();
+		var repass = $('#crepass').val();
+		var email =  $('#email').val(); //TODO NEED TO PROTECT AGAINST ATTACKS	
+		if( pass != repass )
+			alert("The password fields must match!");
+		else 
+		{
+			name = name.trim();
+			email = email.trim();
+			pass = pass.trim();
+			repass = repass.trim();
+			if( !socket )
+				alert("problem with socket");
+			socket.emit('create_login' , { user_name: name , pass_word: pass , user_email : email} );
+		}
+
+	}
+	);
+	
+	});
+
+ 
+</script>
